@@ -21,6 +21,15 @@ body {
   }
 }
 
+/* @media (min-width: 992px) { */
+/*   #createPostArea { */
+/*     width: 50%; */
+/*   } */
+/*   .tox { */
+/*     height: 300px !important; */
+/*   } */
+/* } */
+
 .indicator {
   position: absolute;
   top: 50%;

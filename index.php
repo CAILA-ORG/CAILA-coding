@@ -1,8 +1,25 @@
+<?php
+// fetch the posts
+// we will be using an API instead of a database
+
+// get the contents from the API
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'http://localhost:5000/demo-api/posts');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+$result = curl_exec($ch);
+curl_close($ch);
+
+// parse the JSON string
+$result = json_decode($result, true);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Tiny MCE -->
+    <script src="https://cdn.tiny.cloud/1/tfm5foww7vz4goyjlhvxlgd7rdn0jo0emir5zx3881dr1d81/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <!-- Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
@@ -56,12 +73,12 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav align-items-center mx-auto">
                 <li class="nav-item">
-                  <a class="nav-link mx-2" href="#!"
+                  <a class="nav-link mx-2" href="./post.php"
                     ><i class="fas fa-plus-circle pe-2"></i>Post</a
                   >
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link mx-2" href="#!"
+                  <a class="nav-link mx-2" href="./about.php"
                     ><i class="fas fa-circle-info pe-2"></i>About</a
                   >
                 </li>
@@ -73,64 +90,54 @@
     </nav>
     <!-- Navbar -->
     <div class="container-fluid mt-2" id="timeline">
+      <?php foreach ($result as $post): ?>
       <div class="border-start border-secondary p-4 position-relative">
         <div class="indicator">
           <button class="btn btn-rounded btn-secondary py-0 px-2">&nbsp;</button>
         </div>
         <div class="card">
-          <div class="card-header">Quote</div>
+          <div class="card-header">
+            <?php echo $post['dateCreated']; ?>
+          </div>
           <div class="card-body">
             <blockquote class="blockquote mb-0">
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-                posuere erat a ante.
+                <?php echo $post['message']; ?>
               </p>
               <footer class="blockquote-footer">
-                Someone famous in <cite title="Source Title">Source Title</cite>
+                <?php echo $post['nickname']; ?>
               </footer>
             </blockquote>
           </div>
         </div>
       </div>
-      <div class="border-start border-secondary p-4 position-relative">
-        <div class="indicator">
-          <button class="btn btn-rounded btn-secondary py-0 px-2">&nbsp;</button>
-        </div>
-        <div class="card">
-          <div class="card-header">Quote</div>
-          <div class="card-body">
-            <blockquote class="blockquote mb-0">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-                posuere erat a ante.
-              </p>
-              <footer class="blockquote-footer">
-                Someone famous in <cite title="Source Title">Source Title</cite>
-              </footer>
-            </blockquote>
-          </div>
-        </div>
+      <?php endforeach; ?>
+    </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Write a Post</h5>
+        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="border-start border-secondary p-4 position-relative">
-        <div class="indicator">
-          <button class="btn btn-rounded btn-secondary py-0 px-2">&nbsp;</button>
-        </div>
-        <div class="card">
-          <div class="card-header">Quote</div>
-          <div class="card-body">
-            <blockquote class="blockquote mb-0">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-                posuere erat a ante.
-              </p>
-              <footer class="blockquote-footer">
-                Someone famous in <cite title="Source Title">Source Title</cite>
-              </footer>
-            </blockquote>
+      <div class="modal-body">
+        <form action="http://localhost:5000/demo-api/posts" method="post">
+          <div class="form-outline mb-4">
+            <input id="nickname" class="form-control" name="nickname" />
+            <label class="form-label" for="nickname">Nickname</label>
           </div>
-        </div>
+          <div class="form-outline mb-4">
+            <textarea class="form-control" id="message" rows="4" name="message"></textarea>
+            <label class="form-label" for="message">Message</label>
+          </div>
+          <button type="submit" class="btn btn-secondary form-control">Save changes</button>
+        </form>
       </div>
     </div>
+  </div>
+</div>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
@@ -140,5 +147,19 @@
       type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"
     ></script>
+<script>
+tinymce.init({
+  selector: 'textarea',
+  plugins: 'autolink link',
+  toolbar: 'undo redo | styleselect | bold italic link | alignleft aligncenter alignright alignjustify | outdent indent',
+  menubar: '',
+  toolbar_mode: 'floating',
+  tinycomments_mode: 'embedded',
+  tinycomments_author: 'Author name',
+  link_assume_external_targets: true,
+  link_default_protocol: 'http',
+});
+
+</script>
   </body>
 </html>
