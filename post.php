@@ -81,7 +81,7 @@
             <h5 class="card-title">Write a Post</h5>
           </div>
           <div class="card-body">
-            <form action="http://localhost:5000/demo-api/posts" method="post">
+            <form action="https://server.caila.academy/demo-api/posts" method="post">
               <div class="form-outline mb-4">
                 <input id="nickname" class="form-control" name="nickname" />
                 <label class="form-label" for="nickname">Nickname</label>

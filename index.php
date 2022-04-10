@@ -4,7 +4,7 @@
 
 // get the contents from the API
 $ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, 'http://localhost:5000/demo-api/posts');
+curl_setopt($ch, CURLOPT_URL, 'https://server.caila.academy/demo-api/posts');
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 $result = curl_exec($ch);
 curl_close($ch);
@@ -114,30 +114,6 @@ $result = json_decode($result, true);
       <?php endforeach; ?>
     </div>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Write a Post</h5>
-        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form action="http://localhost:5000/demo-api/posts" method="post">
-          <div class="form-outline mb-4">
-            <input id="nickname" class="form-control" name="nickname" />
-            <label class="form-label" for="nickname">Nickname</label>
-          </div>
-          <div class="form-outline mb-4">
-            <textarea class="form-control" id="message" rows="4" name="message"></textarea>
-            <label class="form-label" for="message">Message</label>
-          </div>
-          <button type="submit" class="btn btn-secondary form-control">Save changes</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
