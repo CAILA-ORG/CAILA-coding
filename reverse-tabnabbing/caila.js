@@ -9,7 +9,8 @@ class CAILA {
     // get hostname so we can compare later in the blacklisted domains
     let hostname = anchorTag.hostname;
 
-    anchorTag.setAttribute('rel', 'noopener nofollow noreferrer');
+    if (!this.whitelistedDomains.includes(hostname))
+      anchorTag.setAttribute('rel', 'noopener nofollow noreferrer');
 
     /* only edit above this line */
     return anchorTag;
