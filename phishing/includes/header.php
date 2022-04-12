@@ -12,3 +12,4 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="./style.css" />
 <title>CAILA | Freedom Wall</title>
+<link rel="icon" href="./images/icon.png">

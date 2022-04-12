@@ -71,7 +71,73 @@ if($page != 0 && count($result) === 0) {
       </li>
     </ul>
     </div>
+    <div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="warningModal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header d-flex justify-content-center">
+            <h1 class="display-1" id="warningModal"><i class="fa-solid fa-circle-exclamation"></i></h1>
+          </div>
+          <div class="modal-body text-center">
+            <h4>Notice!</h4>
+            <div class="message"></div>
+          </div>
+          <button type="button" class="btn btn-primary w-50 align-self-center mb-3 rounded-pill">Proceed</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="dangerModal" tabindex="-1" aria-labelledby="dangerModal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header d-flex justify-content-center">
+            <h1 class="display-1" id="dangerModal"><i class="fa-solid fa-circle-xmark"></i></h1>
+          </div>
+          <div class="modal-body text-center">
+            <h4>Danger!</h4>
+            <div class="message"></div>
+          </div>
+          <button type="button" class="btn btn-primary w-50 align-self-center mb-3 rounded-pill" data-mdb-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
+    <script src="./caila.js"></script>
+    <script>
+      $(function () {
+        // initialize button inside warning modal
+        $('#warningModal button').on('click', () => { 
+          let url = $('#warningModal button').attr('data-url') 
+          let target = $('#warningModal button').attr('data-target') 
+          if (target === '_blank') {
+            window.open(url,'_blank');
+          } else {
+            location.href = url;
+          }
+          $('#warningModal').modal('hide')
+        })
+      })
+      let caila = new CAILA({
+        options: {
+          blacklistedDomains: ['www.youtube.com'],
+          whitelistedDomains: [location.host]
+        },
+        onNormalLink: function (url, domain, target) {
+          $('#warningModal .message').html(`You are leaving CAILA Freedom Wall. Do you want to proceed to ${ domain }?` )
+          $('#warningModal button').attr('data-url', url);
+          $('#warningModal button').attr('data-target', target);
+          $('#warningModal').modal('show')
+        },
+        onBlacklistedLink: function (url, domain, target) {
+          $('#dangerModal .message').html(`This domain (${ domain }) has been flagged for its malicious activities. <br>For your safety, CAILA will not allow this URL to be opened.` )
+          $('#dangerModal').modal('show')
+        },
+        onWhitelistedLink: function (url) {
+          // just redirect
+          location.href = url
+        }
+      })
+      caila.protect()
+    </script>
   </body>
 </html>
