@@ -1,0 +1,17 @@
+<?php
+class CAILA {
+  // Properties
+  public $blacklistedDomains;
+  public $whitelistedDomains;
+
+  function __construct($options) {
+    var_dump($options['blacklistedDomains']);
+    $this -> blacklistedDomains = isset($options -> blacklistedDomains) ? $options -> blacklistedDomains : [];
+    $this -> whitelistedDomains = isset($options -> whitelistedDomains) ? $options -> whitelistedDomains : [];
+  }
+
+  function getURLClassification () {
+    return 'whitelisted';
+  }
+}
+?>
