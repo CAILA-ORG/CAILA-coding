@@ -8,7 +8,16 @@ $url = $_GET['url'];
 // INSERT INTO analytics (url) VALUES ($_GET['url'])
 
 // initialize CAILA
-$options = array('whitelistedDomains' => [$_SERVER['HTTP_HOST']], 'blacklistedDomains' => ['evilzone.com']);
+$options = array(
+  'whitelistedDomains' => [
+    $_SERVER['HTTP_HOST'],  // make sure that our domain is included in the whitelisted
+    'facebook.com',         // whitelist facebook.com for testing purposes 
+    '31.13.87.36'           // whitelist facebook's IP as well
+  ], 
+  'blacklistedDomains' => [
+    'evilzone.com'
+  ]
+);
 $caila = new CAILA($options);
 
 $classification =  $caila->getURLClassification($url);

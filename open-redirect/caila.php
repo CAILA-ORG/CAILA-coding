@@ -19,16 +19,28 @@ class CAILA
   {
     $host = $this->getSimplifiedHost($url);
 
-    if(in_array($host, $this->blacklistedDomains)) {
-      return 'blacklisted';
-    }
-
-    if(in_array($host, $this->whitelistedDomains)) {
-      return 'whitelisted';
-    }
-
-    if($host === 'invalid') {
+    if ($host === 'invalid') {
       return 'invalid';
+    }
+
+    // run against the blacklist
+    for ($i = 0; $i < count($this->blacklistedDomains); $i++) {
+      // generate pattern to make sure that even the subdomains are handled
+      $pattern = '/' . preg_quote($this->blacklistedDomains[$i], '/') . '$/';
+      // check if the blacklist pattern matches the host
+      if (preg_match($pattern, $host)) {
+        return 'blacklisted';
+      }
+    }
+
+    // run against the whitelist
+    for ($i = 0; $i < count($this->whitelistedDomains); $i++) {
+      // generate pattern to make sure that even the subdomains are handled
+      $pattern = '/' . preg_quote($this->whitelistedDomains[$i], '/') . '$/';
+      // check if the whitelist pattern matches the host
+      if (preg_match($pattern, $host)) {
+        return 'whitelisted';
+      }
     }
 
     return 'normal';
@@ -87,7 +99,6 @@ class CAILA
     }
 
     return false;
-
   }
 
   function isHostIsIP($host)
