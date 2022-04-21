@@ -1,4 +1,7 @@
 <?php
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Credentials: true');
+
 require('./caila.php');
 
 // get the 'url' parameter in the url
@@ -24,7 +27,7 @@ $classification =  $caila->getURLClassification($url);
 $host = $caila->getSimplifiedHost($url);
 
 if($classification === 'whitelisted') {
-  header('location: '.$url);
+  header('Location: '.$url);
 }
 ?>
 
