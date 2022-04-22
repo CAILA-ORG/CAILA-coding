@@ -19,11 +19,15 @@ class CAILA
   {
     $host = $this->getSimplifiedHost($url);
 
+    // return 'invalid' if the host failed to be simplified
     if ($host === 'invalid') {
       return 'invalid';
     }
 
-    // run against the blacklist
+    
+    /* only edit below this line */
+
+        // run against the blacklist
     for ($i = 0; $i < count($this->blacklistedDomains); $i++) {
       // generate pattern to make sure that even the subdomains are handled
       $pattern = '/' . preg_quote($this->blacklistedDomains[$i], '/') . '$/';
@@ -43,6 +47,19 @@ class CAILA
       }
     }
 
+    
+    // run against the blacklist
+    // return 'blacklisted' if domain is blacklisted
+
+    // run against the whitelist
+    // return 'whitelisted' if dotps://31.13.87.36.google.com/main is blacklisted
+
+
+    
+    /* only edit above this line */
+
+    
+    // return 'normal' if the domain is not in blacklisted or whitelisted
     return 'normal';
   }
 
@@ -89,7 +106,7 @@ class CAILA
 
     if (
       preg_match(
-        '/^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$/',
+        '/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$|^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)+([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$/',
         $host
       ) &&
       // port must be empty or in range of 1-65535
@@ -135,3 +152,4 @@ class CAILA
   }
 }
 ?>
+
